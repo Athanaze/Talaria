@@ -92,6 +92,7 @@ function addMessageToChatRoom(msg){
             chatRoomElement.insertAdjacentHTML('beforeend','<div class="msgContainerOther"><div class="msgOther">'+'<p class="author">'+result+'</p>'+msg[2]+'<p class="infos">'+timeStampToPrettyStr(msg[1])+'</p></div></div>');
         });
     }
+    alert("Do not try to send a message here ! It's just an example.")
   }
 
 }
