@@ -5,17 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Conversation</title>
     <link rel="stylesheet" type="text/css" href="style.css"></link>
+    <script type="text/javascript" src="js/crypto-js/crypto-js.js"></script>
     <script type="text/javascript" src="js/connectionSC.js"></script>
     <script src="js/resizeTextArea.js" type="text/javascript"></script>
+
+    <link rel="shortcut icon" href="favicon.ico" />
 </head>
 <body onload="initTextArea();">
+    <div id="overlay">
+        <div class="overlayWrapper">
+            <h1 id="overlayHeadline" class="bigHeadline">You are not a member of this conversation</h1>
+            <center><button onclick="overlayOK()">OK</button></center>
+        </div>
+    </div>
     <div id="panelContainer">
         <div id="sideBar">
+            <a class="convLink" href="index.html">HOME</a>
             <h1 id="convsHeader">Conversations</h1>
         </div>
         <div id="chatRoomContainer">
             <div class="topBar">
-                <a class="topBarBtn" href="index.html">&#8617;</a>
                 <h2 id="topBarHeader">Conversation</h2>
             </div>
 

@@ -1,11 +1,16 @@
 /////////////////////////////////////////////////
 // Connection to web3
 /////////////////////////////////////////////////
+
+function web3Error(){
+  alert("No web3 provider. You should consider trying MetaMask!");
+}
+
 if (typeof web3 !== 'undefined') {
     web3 = new Web3(web3.currentProvider);
 }
 else {
-  alert("NO PROVIDER");
+  web3Error();
 }
 window.addEventListener('load', async () => {
     // Modern dapp browsers...
@@ -16,23 +21,39 @@ window.addEventListener('load', async () => {
             await ethereum.enable();
             // Acccounts now exposed
         } catch (error) {
-            // User denied account access...
+            console.log("User denied account access...");
         }
     }
     // Legacy dapp browsers...
     else if (window.web3) {
         window.web3 = new Web3(web3.currentProvider);
-        // Acccounts always exposed
-        //web3.eth.sendTransaction({/* ... */});
     }
     // Non-dapp browsers...
     else {
-        alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
+        web3Error();
     }
 });
 
-const SMART_CONTRACT_ADDRESS = "0xeA2df70FBC0edfD7fddFbc7181e60C71b666eeE5";
+const SMART_CONTRACT_ADDRESS = "0xd0dbd67ce2d262006fcc4b3ce356658ced8d07cd";
 var abi = web3.eth.contract([
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "index",
+				"type": "uint256"
+			},
+			{
+				"name": "addressToAdd",
+				"type": "address"
+			}
+		],
+		"name": "addAddressToConv",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
 	{
 		"constant": false,
 		"inputs": [
@@ -56,26 +77,26 @@ var abi = web3.eth.contract([
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
-				"name": "index",
+				"name": "timestamp",
 				"type": "uint256"
 			},
 			{
-				"name": "a",
-				"type": "address"
+				"name": "message",
+				"type": "string"
 			}
 		],
-		"name": "isInConv",
+		"name": "createConv",
 		"outputs": [
 			{
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
 			}
 		],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -121,21 +142,17 @@ var abi = web3.eth.contract([
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
+		"constant": true,
+		"inputs": [],
+		"name": "getLatestConvId",
+		"outputs": [
 			{
-				"name": "index",
+				"name": "",
 				"type": "uint256"
-			},
-			{
-				"name": "addressToAdd",
-				"type": "address"
 			}
 		],
-		"name": "addAddressToConv",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -170,26 +187,26 @@ var abi = web3.eth.contract([
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [
 			{
-				"name": "timestamp",
+				"name": "index",
 				"type": "uint256"
 			},
 			{
-				"name": "message",
-				"type": "string"
+				"name": "a",
+				"type": "address"
 			}
 		],
-		"name": "createConv",
+		"name": "isInConv",
 		"outputs": [
 			{
 				"name": "",
-				"type": "uint256"
+				"type": "bool"
 			}
 		],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]);

@@ -1,6 +1,4 @@
 var sideBar = document.getElementById('sideBar');
-
-
 /*
 Get the whole conversation JSON object, so we can iterate over it, and generate
 the list containing all the user's conversations
@@ -11,11 +9,11 @@ async function getWholeObjConv() {
     return js;
 }
 
-
 function generateSideBar(refId){
     getWholeObjConv().then(function(result){
         for (var i = 0; i < result.length; i++) {
-            var s = '<a class="convLink" href="conv.html?i='+result[i].id.toString()+'">'+result[i].name+'</a>';
+            var strId = result[i].id.toString();
+            var s = '<a class="convLink" href="conv.html?i='+strId+'">'+result[i].name+' ID:'+strId+'</a>';
             sideBar.insertAdjacentHTML('beforeend',s);
         }
     });

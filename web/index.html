@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <script type="text/javascript" src="js/crypto-js/crypto-js.js"></script>
     <script type="text/javascript" src="js/connectionSC.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css"></link>
 </head>
@@ -14,17 +16,12 @@
         </div>
         <div id="homePanel">
             <h1>Home</h1>
-            <div id="unreadMessages">
-                <h2>Unread messages</h2>
-                <center><p id="unreadMessagesPlaceHolder">Nothing to be seen here...</p></center>
-            </div>
-            <h1>Manage</h1>
-
             <div>
                 <div class="option" onclick="dropDown('imgNco','formNCo')">New conversation on the blockchain<img id="imgNco"src="img/downArrow.png"/></div>
                 <form id="formNCo" action="#">
-                    <input id="NCoMsg" type="text" class="inputTxt" placeholder="Inital message"><br>
-                    <input onclick="createNewConv()" type="submit" class="btn" value="Create conversation">
+                    <input id="NCoMsg" type="text" class="inputTxt" placeholder="Conversation name"><br>
+                    <input id="NCoKey" type="text" class="inputTxt" placeholder="The key used for encryption"><br>
+                    <input id="NCoBtn" type="submit" class="btn" value="Create conversation">
                 </form>
             </div>
 
@@ -33,7 +30,7 @@
                 <form id="formAAC" action="#">
                     <input id="AACId" type="number" class="inputTxt" placeholder="Conversation id"><br>
                     <input id="AACAddress" type="text" class="inputTxt" placeholder="Address (starts with 0x)"><br>
-                    <input onclick="addAddressToExistingConv()" type="submit" class="btn" value="Add Address">
+                    <input id="AACBtn" type="submit" class="btn" value="Add Address">
                 </form>
             </div>
 
@@ -41,8 +38,9 @@
                 <div class="option" onclick="dropDown('imgACL','formACL')">Add an existing conversation to my list<img id="imgACL"src="img/downArrow.png"/></div>
                 <form id="formACL" action="#">
                     <input id="ACLId" type="number" class="inputTxt" placeholder="Conversation id"><br>
+                    <input id="ACLKey" type="text" class="inputTxt" placeholder="The key used for encryption"><br>
                     <input id="ACLName" type="text" class="inputTxt" placeholder="Conv. Name (stored locally)"><br>
-                    <input onclick="addConvToList()" type="submit" class="btn" value="Add conversation">
+                    <input id="ACLBtn" type="submit" class="btn" value="Add conversation">
                 </form>
             </div>
 
@@ -51,12 +49,9 @@
                 <form id="formNCA" action="#">
                     <input id="NCAddress" type="text" class="inputTxt" placeholder="Address (starts with 0x)"><br>
                     <input id="NCName" type="text" class="inputTxt" placeholder="Name"><br>
-                    <input onclick="onClickNCBtn()" type="submit" class="btn" value="Add Contact" >
+                    <input id="NCBtn" type="submit" class="btn" value="Add Contact" >
                 </form>
             </div>
-
-            <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
-            <script type="text/javascript"> new TradingView.widget({ "width": 620, "height": 450, "symbol": "KRAKEN:ETHUSD", "interval": "60", "timezone": "Etc/UTC", "theme": "Dark", "style": "1", "locale": "ru", "toolbar_bg": "#f1f3f6", "enable_publishing": false, "hide_top_toolbar": true, "allow_symbol_change": true, "hideideas": true }); </script>
         </div>
 
     </div>

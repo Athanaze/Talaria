@@ -1,3 +1,4 @@
+// only resizeTextArea, other ui stuff is in conv.js in the UI section
 var observe;
 if (window.attachEvent) {
     observe = function (element, event, handler) {

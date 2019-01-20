@@ -1,29 +1,66 @@
 // use the variable 'contract' from connectionSC.js
 
+//Functions used at multiple places
+async function addKey(id, key){
+    const response = await fetch('http://localhost:5000/addKey/'+id+'/'+key);
+    const rj = await response.json(); //extract JSON from the http response
+    if (rj.succeed){
+        console.log("New key added !");
+    }
+    else{
+        alert("Something went wrong");
+    }
+}
+
+async function addConvToList(id, name){
+    const response = await fetch('http://localhost:5000/d/'+id+'/'+name);
+    const rj = await response.json(); //extract JSON from the http response
+    if (rj.succeed){
+        console.log("New conversation added !");
+    }
+    else{
+        alert("something went wrong");
+    }
+}
 ////////////////////////////////////////////////////
 // Conversation
-//Create a new conversation on the blockchain
-function createNewConv() {
+
+document.getElementById("NCoBtn").addEventListener("click", function(){
+    //Create a new conversation on the blockchain
     var initialMsg = document.getElementById("NCoMsg").value;
+    var encryMsg = CryptoJS.AES.encrypt(initialMsg, document.getElementById("NCoKey").value).toString();
     var nowTimeStamp = Math.floor(Date.now() / 1000);
 
-    contract.createConv.sendTransaction(nowTimeStamp,initialMsg,{from:web3.eth.coinbase}, function(error, result){
+    contract.createConv.sendTransaction(nowTimeStamp,encryMsg,{from:web3.eth.coinbase}, function(error, result){
         if(!error) {
-            alert("Conversation id : "+result);
         }
         else {
             alert(error);
         }
     });
-}
 
+    //Save the key locally
+    contract.getLatestConvId(function (error, result) {
+      if(!error){
+       var key = document.getElementById("NCoKey").value;
+       addKey(result, key);
+       addConvToList(result, initialMsg);
+       location.reload();
+       alert("Dont forget to validate the transaction with MetaMask !")
+      }
+      else{
+        alert("Error");
+      }
+    });
+  });
 
 //AAC
-function addAddressToExistingConv(){
+document.getElementById("AACBtn").addEventListener("click", function(){
+    //Add an address to an existing conversation
     var convId = document.getElementById("AACId").value;
     var address = document.getElementById("AACAddress").value;
     if(isAddress(address)){
-        contract.addAddressToConv.sendTransaction(id,address,{from:web3.eth.coinbase}, function(error, result){
+        contract.addAddressToConv.sendTransaction(convId,address,{from:web3.eth.coinbase}, function(error, result){
             if(!error) {
                 alert("Address added !");
             }
@@ -35,35 +72,27 @@ function addAddressToExistingConv(){
     else{
         alert("Enter a valid address");
     }
-
-}
+});
 //ACL
-async function addConvToList(){
-    var id = document.getElementById("ACLId").value;
-    var name = document.getElementById("ACLName").value;
-    const response = await fetch('http://localhost:5000/d/'+id+'/'+name);
-    const rj = await response.json(); //extract JSON from the http response
-    if (rj.succeed){
-        alert("New conversation added !");
-    }
-    else{
-        alert("something went wrong");
-    }
-}
-
+//add conversation to the local list
+document.getElementById("ACLBtn").addEventListener("click", function(){
+    addConvToList(document.getElementById("ACLId").value, document.getElementById("ACLName").value);
+    addKey(document.getElementById("ACLId").value, document.getElementById("ACLKey").value);
+});
 ///////////////////////////////////////////////////
 // New Contact (NC)
-function onClickNcBtn() {
-    var address = document.getElementById("NCAddress").value;
+//Get the user's input, then call the async createNewContact
+document.getElementById("NCBtn").addEventListener("click", function(){
+    var address = document.getElementById("NCAddress").value.toUpperCase();
     var name = document.getElementById("NCName").value;
     if(isAddress(address)){
+
         createNewContact(address, name);
     }
     else{
         alert("Enter a valid address");
     }
-
-}
+});
 async function createNewContact(address, name) {
     const response = await fetch('http://localhost:5000/c/'+address+'/'+name);
     const rj = await response.json(); //extract JSON from the http response
@@ -116,27 +145,6 @@ var isAddress = function (address) {
         // If it's all small caps or all all caps, return true
         return true;
     } else {
-        // Otherwise check each case
-        return isChecksumAddress(address);
+        return true;
     }
-};
-
-/**
- * Checks if the given string is a checksummed address
- *
- * @method isChecksumAddress
- * @param {String} address the given HEX adress
- * @return {Boolean}
-*/
-var isChecksumAddress = function (address) {
-    // Check each case
-    address = address.replace('0x','');
-    var addressHash = sha3(address.toLowerCase());
-    for (var i = 0; i < 40; i++ ) {
-        // the nth letter should be uppercase if the nth digit of casemap is 1
-        if ((parseInt(addressHash[i], 16) > 7 && address[i].toUpperCase() !== address[i]) || (parseInt(addressHash[i], 16) <= 7 && address[i].toLowerCase() !== address[i])) {
-            return false;
-        }
-    }
-    return true;
 };
