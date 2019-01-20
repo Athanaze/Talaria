@@ -71,6 +71,8 @@ getNameViaConv(convIndex).then(function(result) {
 //Add msg to the DOM
 var chatRoomElement = document.getElementById('chatRoom');
 function addMessageToChatRoom(msg){
+  //Normal behavior
+  if(convIndex != 0){
     if(msg[0].toString() == myAddress){
         chatRoomElement.insertAdjacentHTML('beforeend','<div class="msgContainerMe"><div class="msgMe">'+decry(msg[2])+'<p class="infos">'+timeStampToPrettyStr(msg[1])+'</p></div></div>');
     }
@@ -79,6 +81,19 @@ function addMessageToChatRoom(msg){
             chatRoomElement.insertAdjacentHTML('beforeend','<div class="msgContainerOther"><div class="msgOther">'+'<p class="author">'+result+'</p>'+decry(msg[2])+'<p class="infos">'+timeStampToPrettyStr(msg[1])+'</p></div></div>');
         });
     }
+  }
+  // Just for the first conversation (#0)
+  else{
+    if(msg[0].toString() == myAddress){
+        chatRoomElement.insertAdjacentHTML('beforeend','<div class="msgContainerMe"><div class="msgMe">'+msg[2]+'<p class="infos">'+timeStampToPrettyStr(msg[1])+'</p></div></div>');
+    }
+    else{
+        getNameViaContact(msg[0].toString()).then(function(result) {
+            chatRoomElement.insertAdjacentHTML('beforeend','<div class="msgContainerOther"><div class="msgOther">'+'<p class="author">'+result+'</p>'+msg[2]+'<p class="infos">'+timeStampToPrettyStr(msg[1])+'</p></div></div>');
+        });
+    }
+  }
+
 }
 
 function timeStampToPrettyStr(timeStamp) {
@@ -161,8 +176,11 @@ function isInConvWrapper(){
                 console.log("User in the conversation");
             }
             else{
-                //if he is not in this conversation, show the overlay
-                showOverlay();
+
+                if(convIndex != 0){
+                  //if he is not in this conversation, show the overlay
+                    showOverlay();
+                }
             }
         }
         else {
