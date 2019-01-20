@@ -11,7 +11,6 @@ var express = require('express');
 var fs = require('fs');
 var url = require('url');
 var app = express();
-var figlet = require('figlet');
 //Serves static files from web folder; i.e. all UI COMPONENTS
 app.use(express.static('web'));
 
@@ -148,27 +147,5 @@ app.get('/getWholeObjConv/', function(req, res){
     res.setHeader('Content-Type', 'application/json');
     res.send(fs.readFileSync('convs.json', 'utf8'));
 });
-
-figlet.text('Talaria',{
-        font: 'Standard',
-        horizontalLayout: 'fitted',
-        verticalLayout: 'fitted'
-    },
-    function(err, data) {
-        if (err) {
-            console.log('Something went wrong...');
-            console.dir(err);
-            return;
-        }
-        const BAR = '===========================================\n===========================================';
-        console.log(BAR);
-        console.log('\x1b[1m','');
-        console.log(data);
-        console.log(' ');
-        console.log(BAR);
-        console.log('\x1b[36m%s\x1b[0m','\nOfficial Website : http://arsent.ch/talaria \nServer is listening on port 5000');
-    }
-);
-
-
+console.log("TALARIA\nOfficial Website : http://arsent.ch/talaria\nServer is listening on port 5000");
 var server = app.listen(5000);
