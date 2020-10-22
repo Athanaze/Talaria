@@ -8,7 +8,7 @@ contract Chatty{
         string[] messages;
     }
     Conv[] convs;
-
+dxyggdsgd
     function createConv(uint timestamp, string message) public returns (uint){
         Conv memory conv = Conv(new address[](0), new address[](0), new uint[](0), new string[](0));
         convs.push(conv);

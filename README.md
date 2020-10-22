@@ -11,3 +11,5 @@ Just "node index.js", and "npm install" the possible missing packages (they shou
 If you want to make an executable :  
 npm install -g pkg  
 pkg index.js (that will generate an executable for Linux, Windows and MacOS)
+
+Have fun !
